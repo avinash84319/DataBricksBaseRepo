@@ -2,4 +2,12 @@
 .gradle
 
 # Ignore Gradle build output directory
-build
+build/
+
+# Ignore Python build artifacts
+dist/
+*.egg-info/
+
+# vscode stuff
+.vscode/
+.metals

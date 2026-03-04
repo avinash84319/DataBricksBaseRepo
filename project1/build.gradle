@@ -14,6 +14,18 @@ plugins {
 
     // Apply the Shadow plugin to create a fat JAR.
     id 'com.github.johnrengelman.shadow' version '8.1.1'
+
+    // Apply the base plugin
+    id 'base'
+}
+
+// Define the source sets for Scala
+sourceSets {
+    main {
+        scala {
+            srcDirs = ['src/main/project1Scala']
+        }
+    }
 }
 
 // Define Scala and Spark versions at the top
@@ -66,3 +78,13 @@ shadowJar {
     archiveClassifier.set('all')
     mergeServiceFiles()
 }
+
+// Task to build Python wheel
+task buildPythonWheel(type: Exec) {
+    workingDir "${projectDir}/src/main"
+    commandLine "python", "setup.py", "bdist_wheel"
+}
+
+// Ensure the Python wheel is built as part of the build lifecycle
+tasks.build.dependsOn(buildPythonWheel)
+tasks.shadowJar.dependsOn(buildPythonWheel)
